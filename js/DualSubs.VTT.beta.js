@@ -391,8 +391,8 @@ async function Translator(type = "", source = "", target = "", text = "") {
 							texts = texts.join("").split(/\n\n/);
 							resolve(texts);
 						} else throw new Error(response);
-					} finally {
-						resolve();
+					} catch (e) {
+						throw e;
 					}
 				});
 			} else {
@@ -408,8 +408,8 @@ async function Translator(type = "", source = "", target = "", text = "") {
 							else if (type == "DeepL") texts = _data?.translations?.map(item => item?.text ?? `翻译失败, 类型: ${type}`)
 							resolve(texts);
 						} else throw new Error(response);
-					} finally {
-						resolve();
+					} catch (e) {
+						throw e;
 					}
 				});
 			};
