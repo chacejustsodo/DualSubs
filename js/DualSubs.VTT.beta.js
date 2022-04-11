@@ -83,7 +83,7 @@ delete headers["Range"]
 				let length = (type == "GoogleCloud") ? 127 : (type == "Azure") ? 99 : (type == "Google") ? 63 : (type == "DeepL") ? 49 : 48;
 				let Parts = await chunk(Full, length);
 				Parts = await Promise.all(Parts.map(async (Part, i) => {
-					if (i > 4 && i % 5 == 0) await $.wait(1000);
+					if (i > 3 && i % 4 == 0) await $.wait(1000);
 					return await retry(Translator, [type, $.Settings.Languages[1], $.Settings.Languages[0], Part], $.Advanced.Translator.Times, $.Advanced.Translator.Interval, $.Advanced.Translator.Exponential); // 3, 100, true
 				})).then(parts => parts.flat(Infinity));
 				//Parts = Parts.flat(Infinity);
