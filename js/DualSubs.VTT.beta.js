@@ -73,7 +73,7 @@ delete headers["Range"]
 			DualSub = OriginVTT;
 			if ($.Verify?.[type]?.Method == "Row") { //逐行翻译
 				DualSub.body = await Promise.all(DualSub.body.map(async item => {
-					//let text2 = await Translator(type, $.Settings.Languages[1], $.Settings.Languages[0], item.text);
+					if (i > 4 && i % 5 == 0) await $.wait(1000);
 					let text2 = await retry(Translator, [type, $.Settings.Languages[1], $.Settings.Languages[0], item.text], $.Advanced.Translator.Times, $.Advanced.Translator.Interval, $.Advanced.Translator.Exponential); // 3, 100, true
 					item.text = await combineText(item.text, text2[0], $.Settings.Position);
 					return item
@@ -82,8 +82,8 @@ delete headers["Range"]
 				let Full = await Promise.all(DualSub.body.map(async item => item.text));
 				let length = (type == "GoogleCloud") ? 127 : (type == "Azure") ? 99 : (type == "Google") ? 63 : (type == "DeepL") ? 49 : 48;
 				let Parts = await chunk(Full, length);
-				Parts = await Promise.all(Parts.map(async Part => {
-					//return await Translator(type, $.Settings.Languages[1], $.Settings.Languages[0], Part);
+				Parts = await Promise.all(Parts.map(async (Part, i) => {
+					if (i > 4 && i % 5 == 0) await $.wait(1000);
 					return await retry(Translator, [type, $.Settings.Languages[1], $.Settings.Languages[0], Part], $.Advanced.Translator.Times, $.Advanced.Translator.Interval, $.Advanced.Translator.Exponential); // 3, 100, true
 				})).then(parts => parts.flat(Infinity));
 				//Parts = Parts.flat(Infinity);
